@@ -11,5 +11,19 @@
                 "id": "elroy-id"
             }
         ]
+    },
+    {
+        "user":{
+            "id": "nisha",
+            "email": "nisha@example.com",
+            "displayName": "Nisha George"
+        },
+        "remoteIdentities": [
+            {
+                "connectorId": "ssh",
+                "id": "nisha"
+            }
+        ]
     }
+
 ]
