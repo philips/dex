@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	ErrorSSHNoSignatureMatch = errors.New("signature does not match challenge for any registered public keys")
+	ErrorNoSSHSignatureMatch = errors.New("signature does not match challenge for any registered public keys")
 )
 
 type SSHIdentity struct {
@@ -127,10 +127,8 @@ func (m *memSSHIdentityRepo) Update(_ repo.Transaction, id SSHIdentity) error {
 
 func (u *SSHIdentity) UnmarshalJSON(data []byte) error {
 	var dec struct {
-		UserID            string    `json:"userId"`
-		PasswordHash      string    `json:"passwordHash"`
-		PasswordPlaintext string    `json:"passwordPlaintext"`
-		PasswordExpires   time.Time `json:"passwordExpires"`
+		UserID         string   `json:"userId"`
+		AuthorizedKeys []string `json:"authorizedKeys"`
 	}
 
 	err := json.Unmarshal(data, &dec)
@@ -139,21 +137,10 @@ func (u *SSHIdentity) UnmarshalJSON(data []byte) error {
 	}
 
 	u.UserID = dec.UserID
+	u.AuthorizedKeys = dec.AuthorizedKeys
 
-	u.PasswordExpires = dec.PasswordExpires
-
-	if len(dec.PasswordHash) != 0 {
-		if dec.PasswordPlaintext != "" {
-			return ErrorInvalidPassword
-		}
-		u.Password = Password(dec.PasswordHash)
-		return nil
-	}
-	if dec.PasswordPlaintext != "" {
-		u.Password, err = NewPasswordFromPlaintext(dec.PasswordPlaintext)
-		if err != nil {
-			return err
-		}
+	if len(dec.PasswordHash) == 0 {
+		return ErrorNoPublicKeys
 	}
 	return nil
 }
