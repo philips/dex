@@ -61,7 +61,7 @@
 		},
 		{
 			"ImportPath": "github.com/gorilla/handlers",
-			"Rev": "60c7bfde3e33c201519a200a4507a158cc03a17b"
+			"Rev": "b3aff83722cb2ae031a70cae984650e3a16cd20e"
 		},
 		{
 			"ImportPath": "github.com/inconshreveable/mousetrap",
@@ -73,6 +73,7 @@
 		},
 		{
 			"ImportPath": "github.com/julienschmidt/httprouter",
+			"Comment": "v1.1",
 			"Rev": "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
 		},
 		{
