@@ -199,9 +199,13 @@ func main() {
 
 	h = handlers.LoggingHandler(log.InfoWriter(), h)
 
+	corsOpts := handlers.CORSOption{}
+	corsOpts.AllowMethods([]string{"GET", "HEAD", "POST", "DELETE"})
+	corsOpts.AllowOrigins([]string{"*"})
+
 	httpsrv := &http.Server{
 		Addr:    lu.Host,
-		Handler: h,
+		Handler: handlers.CORS(corsOpts)(h),
 	}
 
 	log.Infof("Binding to %s...", httpsrv.Addr)
